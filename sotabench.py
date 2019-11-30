@@ -2,7 +2,7 @@
 """
 @project:   kg_ownthink
 @author:    xiaoji
-@file:      sotabench_eval.py
+@file:      sotabench.py
 @time:      2019-11-30 17:06
 """
 
@@ -13,6 +13,7 @@ from allennlp.data.iterators import DataIterator
 from allennlp.models.archival import load_archive
 from allennlp.nn.util import move_to_device
 
+
 def load_model(url, batch_size=64):
     archive = load_archive(url, cuda_device=0)
     model = archive.model
@@ -22,6 +23,7 @@ def load_model(url, batch_size=64):
     data_iterator = DataIterator.from_params(iterator_params)
     data_iterator.index_with(model.vocab)
     return model, reader, data_iterator
+
 
 def evaluate(model, dataset, data_iterator, evaluator):
     model.eval()
@@ -35,7 +37,9 @@ def evaluate(model, dataset, data_iterator, evaluator):
         if evaluator.cache_exists:
             break
 
-evaluator = SQuADEvaluator(local_root="data/nlp/squad", model_name="BiDAF (single)",
+
+evaluator = SQuADEvaluator(
+    local_root="data/nlp/squad", model_name="BiDAF (single)",
     paper_arxiv_id="1611.01603", version=SQuADVersion.V11)
 
 model, reader, data_iter =\
